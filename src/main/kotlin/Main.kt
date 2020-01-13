@@ -1,4 +1,3 @@
-class Main {
-  fun main(args: Array<String>) =
-      println("hello world!")
+fun main() {
+  println("hello world!")
 }
