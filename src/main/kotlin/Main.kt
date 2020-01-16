@@ -1,3 +1,6 @@
+import server.JettyServer
+
 fun main() {
-  println("hello world!")
+  JettyServer().startServer()
+
 }
