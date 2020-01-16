@@ -13,7 +13,7 @@ import javax.ws.rs.ext.Provider
 
 class JettyServer {
   fun startServer() {
-    println("starting up")
+    println("booting the server")
 
     val baseUri = UriBuilder.fromUri("http://localhost/").port(8080).build()
     val serverConfig = ResourceConfig()
@@ -21,9 +21,7 @@ class JettyServer {
         .register(ObjectMapperProvider::class.java)
         .register(FirstResource())
 
-    JettyHttpContainerFactory.createServer(baseUri, serverConfig).use { server ->
-      server.join()
-    }
+    JettyHttpContainerFactory.createServer(baseUri, serverConfig).use { it.join() }
   }
 }
 
