@@ -4,9 +4,13 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.project
+.settings/
+.classpath
 ### Kotlin ###
 # Compiled class file
 *.class
+target/
 # Log file
 *.log
 # Mobile Tools for Java (J2ME)
