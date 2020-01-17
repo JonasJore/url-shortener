@@ -3,7 +3,7 @@ Kotlin project for shortening a given url
 
 TODO:
 * add support for logging [:heavy_check_mark:]
-* adding a db config to the project (nosql? sql?)
+* adding a db config to the project (nosql? sql? postgres?) [:heavy_check_mark:]
 * new module for the actual url-shortener
 * finding a way to automatically add resources to the server
 
