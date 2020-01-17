@@ -8,13 +8,19 @@ import org.glassfish.jersey.server.ResourceConfig
 import javax.ws.rs.core.UriBuilder
 import javax.ws.rs.ext.ContextResolver
 import org.eclipse.jetty.server.Server
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import resource.FirstResource
 import javax.ws.rs.ext.Provider
 
 class JettyServer {
-  fun startServer() {
-    println("booting the server")
 
+  private val logger: Logger = LoggerFactory.getLogger(JettyServer::class.java)
+  fun startServer() {
+    logger.info("firing up the jetty server")
+    logger.warn("warning")
+    logger.error("error")
+    logger.debug("debug")
     val baseUri = UriBuilder.fromUri("http://localhost/").port(8080).build()
     val serverConfig = ResourceConfig()
         .register(JacksonFeatures::class.java)
