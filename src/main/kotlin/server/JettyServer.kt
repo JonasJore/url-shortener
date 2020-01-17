@@ -3,24 +3,20 @@ package server
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures
+import org.apache.log4j.Logger
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory
 import org.glassfish.jersey.server.ResourceConfig
 import javax.ws.rs.core.UriBuilder
 import javax.ws.rs.ext.ContextResolver
 import org.eclipse.jetty.server.Server
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import resource.FirstResource
 import javax.ws.rs.ext.Provider
 
 class JettyServer {
+  private val logger: Logger = Logger.getLogger(JettyServer::class.java)
 
-  private val logger: Logger = LoggerFactory.getLogger(JettyServer::class.java)
   fun startServer() {
-    logger.info("firing up the jetty server")
-    logger.warn("warning")
-    logger.error("error")
-    logger.debug("debug")
+    logger.info("firing up the server")
     val baseUri = UriBuilder.fromUri("http://localhost/").port(8080).build()
     val serverConfig = ResourceConfig()
         .register(JacksonFeatures::class.java)

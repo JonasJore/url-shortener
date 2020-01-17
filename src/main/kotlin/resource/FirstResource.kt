@@ -1,5 +1,6 @@
 package resource
 
+import org.apache.log4j.Logger
 import java.time.LocalDate
 import javax.ws.rs.GET
 import javax.ws.rs.Path
@@ -10,6 +11,9 @@ data class Example(val name: String, val id: Long, val date: LocalDate)
 
 @Path("/")
 class FirstResource {
+
+  private val logger: Logger = Logger.getLogger(FirstResource::class.java)
+
   @Path("/hello")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
