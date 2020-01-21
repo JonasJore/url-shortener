@@ -1,5 +1,3 @@
-package server
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures
@@ -9,7 +7,6 @@ import org.glassfish.jersey.server.ResourceConfig
 import javax.ws.rs.core.UriBuilder
 import javax.ws.rs.ext.ContextResolver
 import org.eclipse.jetty.server.Server
-import resource.FirstResource
 import javax.ws.rs.ext.Provider
 
 class JettyServer {
