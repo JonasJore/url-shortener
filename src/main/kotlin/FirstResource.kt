@@ -1,4 +1,3 @@
-import domain.ShortenedUrl
 import org.apache.log4j.Logger
 import java.lang.Exception
 import java.time.LocalDate
@@ -12,7 +11,7 @@ import javax.ws.rs.core.Response
 
 data class Example(val name: String, val id: Long, val date: LocalDate)
 
-@Path("/")
+@Path("/api")
 class FirstResource {
 
   private val logger: Logger = Logger.getLogger(FirstResource::class.java)
@@ -31,11 +30,14 @@ class FirstResource {
   fun shorten(urlShortenDTO: UrlShortenDTO): Response {
     try {
       logger.info(urlShortenDTO)
-      val short: ShortenedUrl = ShortenedUrlMapper(urlShortenDTO.url, urlShortenDTO.shortenedUrl).toShortenedUrl()
-      logger.info(short.shortened)
+//      logger.info(short.shortened)
+//      logger.info(Response.ok().build())
+      ShortenUrlService(urlShortenDTO)
+          .addnewShortenedUrl(ShortenedUrlMapper(urlShortenDTO.url, urlShortenDTO.shortenedUrl)
+              .toShortenedUrl())
       return Response.ok().build()
     } catch (ex: Exception) {
-      logger.error(ex.printStackTrace())
+      logger.error("internal server error", ex)
       return Response.status(500).build()
     }
 

@@ -33,3 +33,5 @@ hs_err_pid*
 out/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+# etc
+shortened-urls.json
