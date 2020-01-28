@@ -30,12 +30,13 @@ class FirstResource {
   fun shorten(urlShortenDTO: UrlShortenDTO): Response {
     try {
       logger.info(urlShortenDTO)
-//      logger.info(short.shortened)
-//      logger.info(Response.ok().build())
-      ShortenUrlService(urlShortenDTO)
-          .addnewShortenedUrl(ShortenedUrlMapper(urlShortenDTO.url, urlShortenDTO.shortenedUrl)
-              .toShortenedUrl())
+      val shortenedUrl = ShortenedUrlMapper(urlShortenDTO.url, urlShortenDTO.shortenedUrl).toShortenedUrl()
+      val shortenUrlService = ShortenUrlService(urlShortenDTO)
+      logger.info(shortenedUrl)
+      shortenUrlService.addnewShortenedUrl(shortenedUrl)
+
       return Response.ok().build()
+
     } catch (ex: Exception) {
       logger.error("internal server error", ex)
       return Response.status(500).build()

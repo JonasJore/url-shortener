@@ -6,7 +6,7 @@
     <appender name="file"
               class="org.apache.log4j.RollingFileAppender">
         <!-- name of log file: -->
-        <param name="file" value="hibernate_tutorial.log" />
+        <param name="file" value="project-logging.log" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="[%d{HH:mm:ss}] %m%n" />
         </layout>
