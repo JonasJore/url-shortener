@@ -23,24 +23,34 @@ class ShortenUrlService(val shortenedUrl: UrlShortenDTO) {
     return file
   }
 
-  private fun writeUrlsToStorageFile(shortenedUrls: ShortenedUrl): Boolean {
-
+  private fun writeUrlsToStorageFile(shortenedUrl: String): Boolean {
     FileOutputStream(createShortenedUrlFile(), true).bufferedWriter().use { writer ->
       // TODO: stuff must be written as string here
-
-//      writer.write(urls.last().toString())
-      writer.write(shortenedUrl.toString())
-      logger.info("written to file")
+      writer.write(shortenedUrl)
     }
+
+    logger.info("written to file")
 
     return true
   }
 
   fun addnewShortenedUrl(shortenedUrl: ShortenedUrl) {
+    val shortenedUrls = ShortenedUrlSingleton.addToShortenedUrls(shortenedUrl)
+    logger.info(shortenedUrls.shortenedUrls.size)
     val objectWriter = ObjectMapper().writer(DefaultPrettyPrinter())
-    val listOfUrls = ShortenedUrls(listOf(shortenedUrl))
-    writeUrlsToStorageFile(shortenedUrl)
-    val jsonList = objectWriter.writeValueAsString(listOfUrls)
-    logger.info(jsonList)
+    val jsonShortenedUrl = objectWriter.writeValueAsString(shortenedUrls)
+    writeUrlsToStorageFile(jsonShortenedUrl)
+  }
+}
+
+// TODO: refactor later
+// TODO: consider turning mutableListOf insto ShortenedUrls class :)
+object ShortenedUrlSingleton {
+  // wat even is this init??
+  val urls = ShortenedUrls(mutableListOf())
+
+  fun addToShortenedUrls(shortenedUrl: ShortenedUrl): ShortenedUrls {
+    urls.shortenedUrls.add(shortenedUrl)
+    return urls
   }
 }
