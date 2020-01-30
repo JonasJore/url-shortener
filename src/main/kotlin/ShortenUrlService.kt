@@ -41,14 +41,3 @@ class ShortenUrlService(val shortenedUrl: UrlShortenDTO) {
   }
 }
 
-// TODO: refactor later
-// TODO: consider turning mutableListOf insto ShortenedUrls class :)
-object ShortenedUrlSingleton {
-  // wat even is this init??
-  val urls = ShortenedUrls(mutableListOf())
-
-  fun addToShortenedUrls(shortenedUrl: ShortenedUrl): ShortenedUrls {
-    urls.shortenedUrls.add(shortenedUrl)
-    return urls
-  }
-}
