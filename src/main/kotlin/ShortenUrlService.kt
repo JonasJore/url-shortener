@@ -4,42 +4,40 @@ import domain.ShortenedUrl
 import domain.ShortenedUrls
 import org.apache.log4j.Logger
 import java.io.File
-import java.io.FileOutputStream
+import java.io.IOException
+import java.nio.file.Paths
 
 class ShortenUrlService(val shortenedUrl: UrlShortenDTO) {
   private val logger: Logger = Logger.getLogger(ShortenUrlService::class.java)
+  private val jsonfileName = "shortened-urls.json"
 
   fun prepareShortenedUrl(shortenedUrl: UrlShortenDTO): ShortenedUrl =
       ShortenedUrlMapper(shortenedUrl.url, shortenedUrl.shortenedUrl)
           .toShortenedUrl()
 
-  private fun createShortenedUrlFile(): File {
-    val file = File("./shortened-urls.json")
-    if (file.createNewFile()) {
-      logger.info("${file.name} created")
-    } else {
-      logger.info("${file.name} already exists")
-    }
-    return file
-  }
+  private fun writeUrlsToStorageFile(shortenedUrls: ShortenedUrls): Unit =
+      ObjectMapper()
+          .writer(DefaultPrettyPrinter())
+          .writeValue(
+              Paths.get(jsonfileName)
+                  .toFile(),
+              shortenedUrls
+                  .shortenedUrls
+          )
 
-  private fun writeUrlsToStorageFile(shortenedUrl: String): Boolean {
-    FileOutputStream(createShortenedUrlFile(), true).bufferedWriter().use { writer ->
-      // TODO: stuff must be written as string here
-      writer.write(shortenedUrl)
-    }
-
-    logger.info("written to file")
-
-    return true
-  }
+  //TODO: find better solution for this later
+  private fun readUrlsFromFile(): List<String> =
+      File(jsonfileName).useLines { it.toList() }
 
   fun addnewShortenedUrl(shortenedUrl: ShortenedUrl) {
+    logger.info(readUrlsFromFile())
     val shortenedUrls = ShortenedUrlSingleton.addToShortenedUrls(shortenedUrl)
-    logger.info(shortenedUrls.shortenedUrls.size)
-    val objectWriter = ObjectMapper().writer(DefaultPrettyPrinter())
-    val jsonShortenedUrl = objectWriter.writeValueAsString(shortenedUrls)
-    writeUrlsToStorageFile(jsonShortenedUrl)
+    try {
+      writeUrlsToStorageFile(shortenedUrls)
+      logger.info("written to file")
+    } catch (ex: IOException) {
+      logger.error("could not write to file", ex)
+    }
   }
 }
 
