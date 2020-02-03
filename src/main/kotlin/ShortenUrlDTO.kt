@@ -1,6 +1,6 @@
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class UrlShortenDTO(
+data class ShortenUrlDTO(
     @JsonProperty("url")
     val url: String,
     @JsonProperty("shortenedUrl")

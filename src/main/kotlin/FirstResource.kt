@@ -13,8 +13,8 @@ data class Example(val name: String, val id: Long, val date: LocalDate)
 
 @Path("/api")
 class FirstResource {
-
   private val logger: Logger = Logger.getLogger(FirstResource::class.java)
+  private val shortenUrlService = ShortenUrlService()
 
   @Path("/hello")
   @GET
@@ -27,13 +27,13 @@ class FirstResource {
   @POST
   @Consumes("application/json")
   @Produces(MediaType.APPLICATION_JSON)
-  fun shorten(urlShortenDTO: UrlShortenDTO): Response {
+  fun shorten(shortenUrlDTO: ShortenUrlDTO): Response {
     try {
-      logger.info(urlShortenDTO)
-      val shortenedUrl = ShortenedUrlMapper(urlShortenDTO.url, urlShortenDTO.shortenedUrl).toShortenedUrl()
-      val shortenUrlService = ShortenUrlService(urlShortenDTO)
-      logger.info(shortenedUrl)
-      shortenUrlService.addnewShortenedUrl(shortenedUrl)
+      logger.info(shortenUrlDTO)
+//      val shortenedUrl = ShortenedUrlMapper(urlShortenDTO.url, urlShortenDTO.shortenedUrl).toShortenedUrl()
+
+//      logger.info(shortenedUrl)
+      shortenUrlService.addnewShortenedUrl(shortenUrlDTO)
 
       return Response.ok().build()
 
