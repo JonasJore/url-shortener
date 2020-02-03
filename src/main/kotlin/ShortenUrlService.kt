@@ -7,12 +7,18 @@ import java.io.File
 import java.io.IOException
 import java.nio.file.Paths
 
-class ShortenUrlService(val shortenedUrl: UrlShortenDTO) {
+class ShortenUrlService() {
   private val logger: Logger = Logger.getLogger(ShortenUrlService::class.java)
   private val jsonfileName = "shortened-urls.json"
+  private var identifier: Int = 0
 
-  fun prepareShortenedUrl(shortenedUrl: UrlShortenDTO): ShortenedUrl =
-      ShortenedUrlMapper(shortenedUrl.url, shortenedUrl.shortenedUrl)
+  fun makeNewIdentifier(): String {
+    identifier += 1
+    return identifier.toString()
+  }
+
+  fun prepareShortenedUrl(shortenedUrl: ShortenUrlDTO): ShortenedUrl =
+      ShortenedUrlMapper(makeNewIdentifier(), shortenedUrl.url, shortenedUrl.shortenedUrl)
           .toShortenedUrl()
 
   private fun writeUrlsToStorageFile(shortenedUrls: ShortenedUrls): Unit =
@@ -29,7 +35,14 @@ class ShortenUrlService(val shortenedUrl: UrlShortenDTO) {
   private fun readUrlsFromFile(): List<String> =
       File(jsonfileName).useLines { it.toList() }
 
-  fun addnewShortenedUrl(shortenedUrl: ShortenedUrl) {
+  fun addnewShortenedUrl(shortenUrl: ShortenUrlDTO) {
+    // todo: refactor
+    val shortenedUrl = ShortenedUrlMapper(
+        makeNewIdentifier(),
+        shortenUrl.url,
+        shortenUrl.shortenedUrl
+    ).toShortenedUrl()
+
     logger.info(readUrlsFromFile())
     val shortenedUrls = ShortenedUrlSingleton.addToShortenedUrls(shortenedUrl)
     try {
