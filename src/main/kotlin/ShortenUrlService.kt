@@ -1,4 +1,3 @@
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.ObjectMapper
 import domain.ShortenedUrl
 import domain.ShortenedUrls
@@ -23,34 +22,41 @@ class ShortenUrlService() {
 
   private fun writeUrlsToStorageFile(shortenedUrls: ShortenedUrls): Unit =
       ObjectMapper()
-          .writer(DefaultPrettyPrinter())
           .writeValue(
               Paths.get(jsonfileName)
                   .toFile(),
-              shortenedUrls
-                  .shortenedUrls
+              shortenedUrls.shortenedUrls
           )
 
-  //TODO: find better solution for this later
-  private fun readUrlsFromFile(): List<String> =
-      File(jsonfileName).useLines { it.toList() }
+  private fun readUrlsFromFile(): String =
+      File(jsonfileName).readText(Charsets.UTF_8)
 
   fun addnewShortenedUrl(shortenUrl: ShortenUrlDTO) {
-    // todo: refactor
+    readUrlsFromFile()
     val shortenedUrl = ShortenedUrlMapper(
         makeNewIdentifier(),
         shortenUrl.url,
         shortenUrl.shortenedUrl
     ).toShortenedUrl()
 
+    logger.info("======================")
     logger.info(readUrlsFromFile())
-    val shortenedUrls = ShortenedUrlSingleton.addToShortenedUrls(shortenedUrl)
+    logger.info(readDeserialisedJSON())
+    val shortenedUrls: ShortenedUrls = ShortenedUrlSingleton.addToShortenedUrls(shortenedUrl)
     try {
       writeUrlsToStorageFile(shortenedUrls)
       logger.info("written to file")
     } catch (ex: IOException) {
       logger.error("could not write to file", ex)
     }
+  }
+
+  fun readDeserialisedJSON() {
+    val mapper = ObjectMapper()
+    val jsonString: String = readUrlsFromFile()
+    val shortened: ShortenedUrls = mapper.readValue(jsonString, ShortenedUrls::class.java)
+    logger.info("=========>=")
+    logger.info(shortened)
   }
 }
 
