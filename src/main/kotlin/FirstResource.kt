@@ -30,13 +30,8 @@ class FirstResource {
   fun shorten(shortenUrlDTO: ShortenUrlDTO): Response {
     try {
       logger.info(shortenUrlDTO)
-//      val shortenedUrl = ShortenedUrlMapper(urlShortenDTO.url, urlShortenDTO.shortenedUrl).toShortenedUrl()
-
-//      logger.info(shortenedUrl)
       shortenUrlService.addnewShortenedUrl(shortenUrlDTO)
-
       return Response.ok().build()
-
     } catch (ex: Exception) {
       logger.error("internal server error", ex)
       return Response.status(500).build()
