@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import domain.ShortenedUrl
 import domain.ShortenedUrls
@@ -41,7 +42,7 @@ class ShortenUrlService() {
 
     logger.info("======================")
     logger.info(readUrlsFromFile())
-    logger.info(readDeserialisedJSON())
+    logger.info(deserialiseJsonFile())
     val shortenedUrls: ShortenedUrls = ShortenedUrlSingleton.addToShortenedUrls(shortenedUrl)
     try {
       writeUrlsToStorageFile(shortenedUrls)
@@ -51,12 +52,13 @@ class ShortenUrlService() {
     }
   }
 
-  fun readDeserialisedJSON() {
+  private fun deserialiseJsonFile(): List<ShortenedUrl> {
     val mapper = ObjectMapper()
     val jsonString: String = readUrlsFromFile()
-    val shortened: ShortenedUrls = mapper.readValue(jsonString, ShortenedUrls::class.java)
-    logger.info("=========>=")
-    logger.info(shortened)
+    val urlCollection: List<ShortenedUrl> = mapper.readValue(jsonString, object : TypeReference<List<ShortenedUrl>>() {})
+    logger.info(urlCollection.size)
+
+    return urlCollection
   }
 }
 

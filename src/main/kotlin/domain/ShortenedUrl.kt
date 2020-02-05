@@ -1,7 +1,17 @@
 package domain
 
+import com.fasterxml.jackson.annotation.JsonCreator
+
 data class ShortenedUrl(
     val id: String,
     val url: String,
     val shortened: String
-)
+) {
+  companion object {
+    @JsonCreator
+    @JvmStatic
+    private fun creator(): ShortenedUrl {
+      return ShortenedUrl(id = "", url = "", shortened = "")
+    }
+  }
+}

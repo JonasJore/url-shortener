@@ -6,7 +6,7 @@ object ShortenedUrlSingleton {
   val urls = ShortenedUrls(mutableListOf())
 
   fun addToShortenedUrls(shortenedUrl: ShortenedUrl): ShortenedUrls {
-    urls.shortenedUrls?.add(shortenedUrl)
+    urls.shortenedUrls.add(shortenedUrl)
     return urls
   }
 }

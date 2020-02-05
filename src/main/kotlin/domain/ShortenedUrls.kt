@@ -1,4 +1,4 @@
 package domain
 
-data class ShortenedUrls(val shortenedUrls: MutableList<ShortenedUrl>? = mutableListOf())
+data class ShortenedUrls(val shortenedUrls: MutableList<ShortenedUrl>)
 
