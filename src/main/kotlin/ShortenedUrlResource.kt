@@ -29,16 +29,13 @@ class ShortenedUrlResource {
   @POST
   @Consumes("application/json")
   @Produces(MediaType.APPLICATION_JSON)
-  fun shorten(shortenedUrlDTO: ShortenedUrlDTO): Response {
-    try {
-      logger.info(shortenedUrlDTO)
-      shortenUrlService.addnewShortenedUrl(shortenedUrlDTO)
-      return Response.ok().build()
-    } catch (ex: Exception) {
-      logger.error("internal server error", ex)
-      return Response.status(500).build()
-    }
-
+  fun shorten(shortenedUrlDTO: ShortenedUrlDTO): Response = try {
+    logger.info(shortenedUrlDTO)
+    shortenUrlService.addnewShortenedUrl(shortenedUrlDTO)
+    Response.ok().build()
+  } catch (ex: Exception) {
+    logger.error("internal server error", ex)
+    Response.status(500).build()
   }
 
   // TODO: this is supposed to return a ShortenedUrl not List<ShortenedUrl>
@@ -46,8 +43,8 @@ class ShortenedUrlResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   fun findUrl(@PathParam("id") id: String): List<ShortenedUrl> =
-    shortenUrlService.deserialiseJsonFile()
-        .filter { it.id == id }
+      shortenUrlService.deserialiseJsonFile()
+          .filter { it.id == id }
 
   @Path("/urls")
   @GET
