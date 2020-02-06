@@ -18,7 +18,7 @@ class JettyServer {
     val serverConfig = ResourceConfig()
         .register(JacksonFeatures::class.java)
         .register(ObjectMapperProvider::class.java)
-        .register(FirstResource())
+        .register(ShortenedUrlResource())
 
     JettyHttpContainerFactory.createServer(baseUri, serverConfig).use { it.join() }
   }
