@@ -3,7 +3,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import domain.ShortenedUrl
 import domain.ShortenedUrls
 import org.apache.log4j.Logger
-import java.io.File
+import util.FileOperations
 import java.io.IOException
 import java.nio.file.Paths
 
@@ -29,19 +29,12 @@ class ShortenUrlService() {
               shortenedUrls.shortenedUrls
           )
 
-  private fun readUrlsFromFile(): String =
-      File(jsonfileName).readText(Charsets.UTF_8)
-
-  fun addnewShortenedUrl(shortenUrl: ShortenUrlDTO) {
-    readUrlsFromFile()
-    val shortenedUrl = ShortenedUrlMapper(
-        makeNewIdentifier(),
-        shortenUrl.url,
-        shortenUrl.shortenedUrl
-    ).toShortenedUrl()
+  fun addnewShortenedUrl(shortenedUrlDTO: ShortenUrlDTO) {
+    FileOperations().readUrlsFromFile()
+    val shortenedUrl = prepareShortenedUrl(shortenedUrlDTO)
 
     logger.info("======================")
-    logger.info(readUrlsFromFile())
+    logger.info(FileOperations().readUrlsFromFile())
     logger.info(deserialiseJsonFile())
     val shortenedUrls: ShortenedUrls = ShortenedUrlSingleton.addToShortenedUrls(shortenedUrl)
     try {
@@ -54,7 +47,7 @@ class ShortenUrlService() {
 
   private fun deserialiseJsonFile(): List<ShortenedUrl> {
     val mapper = ObjectMapper()
-    val jsonString: String = readUrlsFromFile()
+    val jsonString: String = FileOperations().readUrlsFromFile()
     val urlCollection: List<ShortenedUrl> = mapper.readValue(jsonString, object : TypeReference<List<ShortenedUrl>>() {})
     logger.info(urlCollection.size)
 
