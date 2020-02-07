@@ -1,6 +1,8 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures
+import endpoints.RedirectResource
+import endpoints.ShortenedUrlResource
 import org.apache.log4j.Logger
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory
 import org.glassfish.jersey.server.ResourceConfig
@@ -14,13 +16,16 @@ class JettyServer {
 
   fun startServer() {
     logger.info("firing up the server")
-    val baseUri = UriBuilder.fromUri("http://localhost/").port(8080).build()
+    val baseUri = UriBuilder
+        .fromUri("http://localhost/")
+        .port(8080)
+        .build()
     val serverConfig = ResourceConfig()
         .register(JacksonFeatures::class.java)
         .register(ObjectMapperProvider::class.java)
-        .register(ShortenedUrlResource())
+        .packages("endpoints")
 
-    JettyHttpContainerFactory.createServer(baseUri, serverConfig).use { it.join() }
+    JettyHttpContainerFactory.createServer(baseUri, serverConfig).use { server: Server -> server.join() }
   }
 }
 

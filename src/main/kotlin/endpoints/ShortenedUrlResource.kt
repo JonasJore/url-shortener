@@ -1,3 +1,7 @@
+package endpoints
+
+import CreateShortenedUrlService
+import ShortenedUrlDTO
 import domain.ShortenedUrl
 import org.apache.log4j.Logger
 import java.lang.Exception
