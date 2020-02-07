@@ -3,6 +3,7 @@ package endpoints
 import CreateShortenedUrlService
 import ShortenedUrlDTO
 import domain.ShortenedUrl
+import domain.TestDTO
 import org.apache.log4j.Logger
 import java.lang.Exception
 import java.time.LocalDate
@@ -15,8 +16,6 @@ import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
-data class Example(val name: String, val id: Long, val date: LocalDate)
-
 @Path("/api")
 class ShortenedUrlResource {
   private val logger: Logger = Logger.getLogger(ShortenedUrlResource::class.java)
@@ -25,8 +24,8 @@ class ShortenedUrlResource {
   @Path("/hello")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  fun hello(): Example {
-    return Example("Jonas", 23423L, LocalDate.now())
+  fun hello(): TestDTO {
+    return TestDTO("Jonas", 23423L, LocalDate.now())
   }
 
   @Path("/shorten-url")
