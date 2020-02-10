@@ -1,14 +1,20 @@
+package service
+
+import ShortenedUrlDTO
+import ShortenedUrlMapper
+import ShortenedUrlSingleton
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import domain.ShortenedUrl
 import domain.ShortenedUrls
 import org.apache.log4j.Logger
+import toShortenedUrl
 import util.FileOperations
 import java.io.IOException
 import java.nio.file.Paths
 
-class CreateShortenedUrlService {
-  private val logger: Logger = Logger.getLogger(CreateShortenedUrlService::class.java)
+class UrlShortenerService {
+  private val logger: Logger = Logger.getLogger(UrlShortenerService::class.java)
   private val jsonfileName: String = "shortened-urls.json"
   private var identifier: Int = 0
 
@@ -48,13 +54,12 @@ class CreateShortenedUrlService {
   }
 
   // the goal is to deserialise the json into the ShortenedUrl::class not a List.
+  //  TODO: move this out of the this service because it has nothing to do with the actual shortening of url.
   fun deserialiseJsonFile(): List<ShortenedUrl> {
     val mapper = ObjectMapper()
     val jsonString: String = FileOperations().readUrlsFromFile()
-    val urlCollection: List<ShortenedUrl> = mapper.readValue(jsonString, object : TypeReference<List<ShortenedUrl>>() {})
-    logger.info(urlCollection.size)
 
-    return urlCollection
+    return mapper.readValue(jsonString, object : TypeReference<List<ShortenedUrl>>() {})
   }
 }
 

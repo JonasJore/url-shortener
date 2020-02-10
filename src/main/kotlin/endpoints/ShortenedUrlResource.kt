@@ -1,6 +1,6 @@
 package endpoints
 
-import CreateShortenedUrlService
+import service.UrlShortenerService
 import ShortenedUrlDTO
 import domain.ShortenedUrl
 import domain.TestDTO
@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response
 @Path("/api")
 class ShortenedUrlResource {
   private val logger: Logger = Logger.getLogger(ShortenedUrlResource::class.java)
-  private val shortenUrlService = CreateShortenedUrlService()
+  private val shortenUrlService = UrlShortenerService()
 
   @Path("/hello")
   @GET
