@@ -8,7 +8,9 @@ import org.apache.log4j.Logger
 import util.FileOperations
 import java.lang.Exception
 import java.time.LocalDate
+import javax.print.attribute.standard.Media
 import javax.ws.rs.Consumes
+import javax.ws.rs.DELETE
 import javax.ws.rs.GET
 import javax.ws.rs.POST
 import javax.ws.rs.Path
@@ -55,4 +57,19 @@ class ShortenedUrlResource {
   @Produces(MediaType.APPLICATION_JSON)
   fun getUrls(): List<ShortenedUrl> =
       fileOperations.deserialiseJsonFile()
+
+  @Path("/url/{id}")
+  @DELETE
+  fun deleteUrl(@PathParam("id") id: String): Response = try {
+    val apply = fileOperations.deserialiseJsonFile()
+        .filter { it.id == id }
+        .toMutableList()
+        .apply { removeAt(0) }
+    logger.info(apply)
+    Response.status(200).build()
+  } catch (ex: Exception) {
+    logger.error("something wrong while deleting url", ex)
+    Response.status(500).build()
+  }
+
 }
