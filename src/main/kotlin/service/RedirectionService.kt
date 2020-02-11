@@ -2,18 +2,18 @@ package service
 
 import domain.ShortenedUrl
 import org.apache.log4j.Logger
+import util.FileOperations
 import java.awt.Desktop
 import java.lang.Exception
 import java.net.URL
 
 class RedirectionService {
-
   val logger: Logger = Logger.getLogger(RedirectionService::class.java)
 
-  private fun findUniqueUrl(uniqueUrl: String): List<ShortenedUrl> {
-    logger.info(uniqueUrl)
-    return UrlShortenerService().deserialiseJsonFile().filter { it.shortened == uniqueUrl || it.id == uniqueUrl }
-  }
+  private fun findUniqueUrl(uniqueUrl: String): List<ShortenedUrl> =
+    FileOperations()
+        .deserialiseJsonFile()
+        .filter { it.shortened == uniqueUrl || it.id == uniqueUrl }
 
   private fun buildUrl(identifier: String) {
     val url = URL("http://$identifier").toURI()
