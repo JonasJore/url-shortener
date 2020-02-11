@@ -1,14 +1,12 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures
-import endpoints.RedirectResource
-import endpoints.ShortenedUrlResource
 import org.apache.log4j.Logger
+import org.eclipse.jetty.server.Server
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory
 import org.glassfish.jersey.server.ResourceConfig
 import javax.ws.rs.core.UriBuilder
 import javax.ws.rs.ext.ContextResolver
-import org.eclipse.jetty.server.Server
 import javax.ws.rs.ext.Provider
 
 class JettyServer {

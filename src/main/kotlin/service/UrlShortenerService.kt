@@ -17,15 +17,11 @@ import java.nio.file.Paths
 class UrlShortenerService {
   private val logger: Logger = Logger.getLogger(UrlShortenerService::class.java)
   private val jsonfileName: String = "shortened-urls.json"
-  private var identifier: Int = 0
 
-  // for now this is how i uniquely identify a shortened url
-  fun makeNewIdentifier(): String {
-    return AlphanumericHashGenerator().generateHash()
-  }
+  private fun generateHash() = AlphanumericHashGenerator().generateHash()
 
   fun prepareShortenedUrl(shortenedUrl: ShortenedUrlDTO): ShortenedUrl =
-      ShortenedUrlMapper(makeNewIdentifier(), shortenedUrl.url, shortenedUrl.shortenedUrl)
+      ShortenedUrlMapper(generateHash(), shortenedUrl.url, shortenedUrl.shortenedUrl)
           .toShortenedUrl()
 
   private fun writeUrlsToStorageFile(shortenedUrls: ShortenedUrls): Unit =
@@ -37,12 +33,8 @@ class UrlShortenerService {
           )
 
   fun addnewShortenedUrl(shortenedUrlDTO: ShortenedUrlDTO) {
-    FileOperations().readUrlsFromFile()
     val shortenedUrl = prepareShortenedUrl(shortenedUrlDTO)
-
-    logger.info("======================")
     logger.info(FileOperations().readUrlsFromFile())
-    logger.info(deserialiseJsonFile())
     val shortenedUrls: ShortenedUrls = ShortenedUrlSingleton.addToShortenedUrls(shortenedUrl)
 
     try {
@@ -51,15 +43,6 @@ class UrlShortenerService {
     } catch (ex: IOException) {
       logger.error("could not write to file", ex)
     }
-  }
-
-  // the goal is to deserialise the json into the ShortenedUrl::class not a List.
-  //  TODO: move this out of the this service because it has nothing to do with the actual shortening of url.
-  fun deserialiseJsonFile(): List<ShortenedUrl> {
-    val mapper = ObjectMapper()
-    val jsonString: String = FileOperations().readUrlsFromFile()
-
-    return mapper.readValue(jsonString, object : TypeReference<List<ShortenedUrl>>() {})
   }
 }
 

@@ -5,6 +5,7 @@ import ShortenedUrlDTO
 import domain.ShortenedUrl
 import domain.TestDTO
 import org.apache.log4j.Logger
+import util.FileOperations
 import java.lang.Exception
 import java.time.LocalDate
 import javax.ws.rs.Consumes
@@ -20,6 +21,7 @@ import javax.ws.rs.core.Response
 class ShortenedUrlResource {
   private val logger: Logger = Logger.getLogger(ShortenedUrlResource::class.java)
   private val shortenUrlService = UrlShortenerService()
+  private val fileOperations = FileOperations()
 
   @Path("/hello")
   @GET
@@ -32,7 +34,7 @@ class ShortenedUrlResource {
   @POST
   @Consumes("application/json")
   @Produces(MediaType.APPLICATION_JSON)
-  fun shorten(shortenedUrlDTO: ShortenedUrlDTO): Response = try {
+  fun addShortenedUrl(shortenedUrlDTO: ShortenedUrlDTO): Response = try {
     logger.info(shortenedUrlDTO)
     shortenUrlService.addnewShortenedUrl(shortenedUrlDTO)
     Response.ok().build()
@@ -41,18 +43,16 @@ class ShortenedUrlResource {
     Response.status(500).build()
   }
 
-  // TODO: this is supposed to return a ShortenedUrl not List<ShortenedUrl>
   @Path("/url/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  fun findUrl(@PathParam("id") id: String): List<ShortenedUrl> =
-      shortenUrlService.deserialiseJsonFile()
-          .filter { it.id == id }
+  fun getUrl(@PathParam("id") id: String): ShortenedUrl =
+      fileOperations.deserialiseJsonFile()
+          .filter { it.id == id }[0]
 
   @Path("/urls")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   fun getUrls(): List<ShortenedUrl> =
-      shortenUrlService.deserialiseJsonFile()
-
+      fileOperations.deserialiseJsonFile()
 }
