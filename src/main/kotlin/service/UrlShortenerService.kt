@@ -9,6 +9,7 @@ import domain.ShortenedUrl
 import domain.ShortenedUrls
 import org.apache.log4j.Logger
 import toShortenedUrl
+import util.AlphanumericHashGenerator
 import util.FileOperations
 import java.io.IOException
 import java.nio.file.Paths
@@ -20,8 +21,7 @@ class UrlShortenerService {
 
   // for now this is how i uniquely identify a shortened url
   fun makeNewIdentifier(): String {
-    identifier += 1
-    return identifier.toString()
+    return AlphanumericHashGenerator().generateHash()
   }
 
   fun prepareShortenedUrl(shortenedUrl: ShortenedUrlDTO): ShortenedUrl =
