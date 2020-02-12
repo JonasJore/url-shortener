@@ -61,11 +61,8 @@ class ShortenedUrlResource {
   @Path("/url/{id}")
   @DELETE
   fun deleteUrl(@PathParam("id") id: String): Response = try {
-    val apply = fileOperations.deserialiseJsonFile()
-        .filter { it.id == id }
-        .toMutableList()
-        .apply { removeAt(0) }
-    logger.info(apply)
+    fileOperations.deleteById(id)
+    logger.info(fileOperations.deserialiseJsonFile())
     Response.status(200).build()
   } catch (ex: Exception) {
     logger.error("something wrong while deleting url", ex)
