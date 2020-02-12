@@ -24,21 +24,13 @@ class UrlShortenerService {
       ShortenedUrlMapper(generateHash(), shortenedUrl.url, shortenedUrl.shortenedUrl)
           .toShortenedUrl()
 
-  private fun writeUrlsToStorageFile(shortenedUrls: ShortenedUrls): Unit =
-      ObjectMapper()
-          .writeValue(
-              Paths.get(jsonfileName)
-                  .toFile(),
-              shortenedUrls.shortenedUrls
-          )
-
   fun addnewShortenedUrl(shortenedUrlDTO: ShortenedUrlDTO) {
     val shortenedUrl = prepareShortenedUrl(shortenedUrlDTO)
     logger.info(FileOperations().readUrlsFromFile())
     val shortenedUrls: ShortenedUrls = ShortenedUrlSingleton.addToShortenedUrls(shortenedUrl)
 
     try {
-      writeUrlsToStorageFile(shortenedUrls)
+      FileOperations().writeUrlsToStorageFile(shortenedUrls)
       logger.info("written to file")
     } catch (ex: IOException) {
       logger.error("could not write to file", ex)
