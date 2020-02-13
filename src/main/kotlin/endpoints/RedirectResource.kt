@@ -6,9 +6,10 @@ import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 
+private val logger: Logger = Logger.getLogger(RedirectResource::class.java)
+
 @Path("/")
 class RedirectResource {
-  private val logger: Logger = Logger.getLogger(RedirectResource::class.java)
 
   @Path("/{uniqueurl}")
   @GET

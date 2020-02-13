@@ -11,4 +11,5 @@ class AlphanumericHashGenerator {
       .map { Random.nextInt(0, charPool.size) }
       .map { index: Int -> charPool[index] }
       .joinToString("")
+
 }
