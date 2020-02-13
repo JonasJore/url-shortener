@@ -7,13 +7,13 @@ import java.awt.Desktop
 import java.lang.Exception
 import java.net.URL
 
-class RedirectionService {
-  val logger: Logger = Logger.getLogger(RedirectionService::class.java)
+private val logger: Logger = Logger.getLogger(RedirectionService::class.java)
 
-  private fun findUniqueUrl(uniqueUrl: String): List<ShortenedUrl> =
+class RedirectionService {
+  private fun findUniqueUrl(uniqueUrl: String): ShortenedUrl =
     FileOperations()
-        .deserialiseJsonFile()
-        .filter { it.shortened == uniqueUrl || it.id == uniqueUrl }
+        .readFileContent()
+        .filter { it.shortened == uniqueUrl || it.id == uniqueUrl }[0]
 
   private fun buildUrl(identifier: String) {
     val url = URL("http://$identifier").toURI()
@@ -27,10 +27,9 @@ class RedirectionService {
   }
 
   fun redirectToUrl(identifier: String): String {
-    val uniqueShortenedUrl = findUniqueUrl(identifier)[0].url
+    val uniqueShortenedUrl = findUniqueUrl(identifier).url
     buildUrl(uniqueShortenedUrl)
     return uniqueShortenedUrl
   }
+
 }
-
-

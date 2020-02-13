@@ -4,38 +4,35 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import domain.ShortenedUrl
 import domain.ShortenedUrls
-import service.UrlShortenerService
 import java.io.File
 import java.nio.file.Paths
 
+private const val JSON_FILE: String = "shortened-urls.json"
+
 class FileOperations {
-  private val jsonfileName: String = "shortened-urls.json"
 
   fun readUrlsFromFile(): String =
-      File(jsonfileName).readText(Charsets.UTF_8)
+      File(JSON_FILE).readText(Charsets.UTF_8)
 
-  // the goal is to deserialise the json into the ShortenedUrls::class not a List.
-  fun deserialiseJsonFile(): MutableList<ShortenedUrl> {
+  // TODO: deserialize into ShortenedUrls instead of MutableList<ShortenedUrl>
+  fun readFileContent(): MutableList<ShortenedUrl> {
     val json: String = FileOperations().readUrlsFromFile()
     return ObjectMapper().readValue(json, object : TypeReference<MutableList<ShortenedUrl>>() {})
   }
 
-  fun writeUrlsToStorageFile(shortenedUrls: ShortenedUrls): Unit =
+  fun writeToFile(shortenedUrls: ShortenedUrls): Unit =
       ObjectMapper()
           .writeValue(
-              Paths.get(jsonfileName)
+              Paths.get(JSON_FILE)
                   .toFile(),
               shortenedUrls.shortenedUrls
           )
 
   fun deleteById(id: String) {
-    val theList = this.deserialiseJsonFile()
+    val theList = this.readFileContent()
     val indexToDelete = theList.indexOf(theList.find { it.id == id })
-
     theList.removeAt(indexToDelete)
-
-    writeUrlsToStorageFile(ShortenedUrls(theList))
-
+    writeToFile(ShortenedUrls(theList))
   }
 
 }
