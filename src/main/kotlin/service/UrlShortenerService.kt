@@ -5,6 +5,7 @@ import ShortenedUrlMapper
 import ShortenedUrlSingleton
 import domain.ShortenedUrl
 import domain.ShortenedUrls
+import domain.UrlChangeRequest
 import org.apache.log4j.Logger
 import toShortenedUrl
 import util.AlphanumericHashGenerator
@@ -36,6 +37,22 @@ class UrlShortenerService {
     } catch (ex: IOException) {
       logger.error("could not write to file", ex)
     }
+  }
+
+  fun changeUrlById(id: String, shortenedUrlDTO: ShortenedUrlDTO) {
+    val urlList = FileOperations().readFileContent()
+    val indexForChange: Int = urlList
+        .indexOf(urlList.find { it.id == id })
+    val mappedShortenedUrl = prepareShortenedUrl(shortenedUrlDTO)
+
+    val urlChangeRequest = UrlChangeRequest(
+        id,
+        indexForChange,
+        urlList,
+        mappedShortenedUrl
+    )
+
+    FileOperations().changeById(urlChangeRequest, id)
   }
 
 }

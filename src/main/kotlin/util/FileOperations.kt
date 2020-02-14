@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import domain.ShortenedUrl
 import domain.ShortenedUrls
+import domain.UrlChangeRequest
 import java.io.File
 import java.nio.file.Paths
 
@@ -33,6 +34,18 @@ class FileOperations {
     val indexToDelete = theList.indexOf(theList.find { it.id == id })
     theList.removeAt(indexToDelete)
     writeToFile(ShortenedUrls(theList))
+  }
+
+  // TODO: finnes det en mer clean måte å gjøre dette på? 
+  fun changeById(urlChangeRequest: UrlChangeRequest, idToChange: String) {
+    urlChangeRequest.listOfUrls
+        .filter { it.id == idToChange }
+        .map {
+          it.url = urlChangeRequest.newUrl.url
+          it.shortened = urlChangeRequest.newUrl.shortened
+        }
+
+    writeToFile(ShortenedUrls(urlChangeRequest.listOfUrls))
   }
 
 }

@@ -9,6 +9,7 @@ import javax.ws.rs.Consumes
 import javax.ws.rs.DELETE
 import javax.ws.rs.GET
 import javax.ws.rs.POST
+import javax.ws.rs.PUT
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
@@ -55,6 +56,18 @@ class ShortenedUrlResource {
     Response.status(200).build()
   } catch (ex: Exception) {
     logger.error("something wrong while deleting url", ex)
+    Response.status(500).build()
+  }
+
+
+  @Path("/url/{id}")
+  @PUT
+  @Consumes("application/json")
+  fun changeUrlById(@PathParam("id") id: String, shortenedUrlDTO: ShortenedUrlDTO): Response = try {
+    shortenUrlService.changeUrlById(id, shortenedUrlDTO)
+    Response.ok().build()
+  } catch (ex: Exception) {
+    logger.error("something wrong while changing url", ex)
     Response.status(500).build()
   }
 

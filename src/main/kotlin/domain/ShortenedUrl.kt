@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator
 
 data class ShortenedUrl(
     val id: String,
-    val url: String,
-    val shortened: String
+    var url: String,
+    var shortened: String
 ) {
   companion object {
     @JsonCreator
