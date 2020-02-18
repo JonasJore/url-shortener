@@ -1,6 +1,4 @@
 # url-shortener
 Kotlin project for shortening a given url
 
-TODO:
-* add support for logging [:heavy_check_mark:]
-* deserialize file content to kotlinclass
+Is this project ready for going public yet? 
