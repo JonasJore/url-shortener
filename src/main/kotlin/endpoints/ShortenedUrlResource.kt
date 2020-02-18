@@ -40,7 +40,7 @@ class ShortenedUrlResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   fun getUrlById(@PathParam("id") id: String): ShortenedUrl =
-      shortenUrlService.getById(id)
+      shortenUrlService.getByIdOrShortened(id)
 
   @Path("/urls")
   @GET

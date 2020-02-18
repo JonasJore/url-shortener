@@ -17,10 +17,15 @@ private val logger: Logger = Logger.getLogger(UrlShortenerService::class.java)
 class UrlShortenerService {
   private fun generateHash() = AlphanumericHashGenerator().generateHash()
 
-  fun getById(id: String): ShortenedUrl =
+  fun findUniqueUrl(uniqueUrl: String): ShortenedUrl? =
       FileOperations()
           .readFileContent()
-          .filter { it.id == id }[0]
+          .find { it.id == uniqueUrl }
+
+  fun getByIdOrShortened(identifier: String): ShortenedUrl =
+      FileOperations()
+          .readFileContent()
+          .filter { it.id == identifier || it.shortened == identifier }[0]
 
   private fun prepareShortenedUrl(shortenedUrl: ShortenedUrlDTO): ShortenedUrl =
       ShortenedUrlMapper(generateHash(), shortenedUrl.url, shortenedUrl.shortenedUrl)
