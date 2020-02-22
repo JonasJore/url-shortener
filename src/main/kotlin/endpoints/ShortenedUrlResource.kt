@@ -33,7 +33,9 @@ class ShortenedUrlResource {
     Response.ok().build()
   } catch (ex: Exception) {
     logger.error("internal server error", ex)
-    Response.status(500).build()
+    Response.status(
+        Response.Status.INTERNAL_SERVER_ERROR
+    ).build()
   }
 
   @Path("/url/{id}")
@@ -53,12 +55,13 @@ class ShortenedUrlResource {
   fun deleteUrl(@PathParam("id") id: String): Response = try {
     fileOperations.deleteById(id)
     logger.info(fileOperations.readFileContent())
-    Response.status(200).build()
+    Response.status(Response.Status.ACCEPTED).build()
   } catch (ex: Exception) {
     logger.error("something wrong while deleting url", ex)
-    Response.status(500).build()
+    Response.status(
+        Response.Status.INTERNAL_SERVER_ERROR
+    ).build()
   }
-
 
   @Path("/url/{id}")
   @PUT
@@ -68,7 +71,9 @@ class ShortenedUrlResource {
     Response.ok().build()
   } catch (ex: Exception) {
     logger.error("something wrong while changing url", ex)
-    Response.status(500).build()
+    Response.status(
+        Response.Status.INTERNAL_SERVER_ERROR
+    ).build()
   }
 
 }

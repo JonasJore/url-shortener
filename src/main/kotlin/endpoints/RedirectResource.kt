@@ -19,7 +19,7 @@ class RedirectResource {
   fun gotoUrl(@PathParam("uniqueurl") uniqueUrl: String): Response = try {
     redirectionService.redirectToUrl(uniqueUrl)
   } catch (ex: RedirectionException) {
-    logger.info("redirection failed du to: ${ex.stackTrace}")
+    logger.info("Redirection failed due to: ${ex.stackTrace}")
     Response.status(
         Response.Status.INTERNAL_SERVER_ERROR
     ).build()
