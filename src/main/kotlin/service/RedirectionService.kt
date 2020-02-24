@@ -6,16 +6,27 @@ import javax.ws.rs.core.Response
 
 private val logger: Logger = Logger.getLogger(RedirectionService::class.java)
 
+const val MATCH_ON_PROTOCOL = "^(?:(http)(s?)://)"
+
 class RedirectionService {
   private val urlShortenerService = UrlShortenerService()
 
+  private fun hasProtocol(url: String): Boolean {
+
+    return Regex(MATCH_ON_PROTOCOL)
+        .let { it containsMatchIn  url }
+  }
+
   // TODO: legg try/catch i endepunktet istedenfor her
   private fun buildUrl(identifier: String): Response {
-    val redirectUri = URL("https://$identifier").toURI()
+    val redirectUri = URL(identifier).toURI()
     logger.info("redirecting to $redirectUri")
 
+    logger.info(hasProtocol("================"))
+    logger.info(hasProtocol(identifier))
+
     return Response.status(
-        Response.Status.TEMPORARY_REDIRECT
+        Response.Status.MOVED_PERMANENTLY
     ).location(redirectUri).build()
   }
 
@@ -23,3 +34,6 @@ class RedirectionService {
       buildUrl(urlShortenerService.getByIdOrShortened(identifier).url)
 
 }
+
+infix fun Regex.containsMatchIn(s: String): Boolean =
+    this.containsMatchIn(s)
