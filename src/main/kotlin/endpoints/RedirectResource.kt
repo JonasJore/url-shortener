@@ -16,7 +16,7 @@ class RedirectResource {
 
   @Path("/{uniqueurl}")
   @GET
-  fun gotoUrl(@PathParam("uniqueurl") uniqueUrl: String): Response = try {
+  fun redirect(@PathParam("uniqueurl") uniqueUrl: String): Response = try {
     redirectionService.redirectToUrl(uniqueUrl)
   } catch (ex: RedirectionException) {
     logger.info("Redirection failed due to: ${ex.stackTrace}")
