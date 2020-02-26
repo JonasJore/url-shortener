@@ -1,6 +1,6 @@
 package endpoints
 
-import ShortenedUrlDTO
+import domain.ShortenedUrlDTO
 import domain.ShortenedUrl
 import org.apache.log4j.Logger
 import service.UrlShortenerService
@@ -75,5 +75,4 @@ class ShortenedUrlResource {
         Response.Status.INTERNAL_SERVER_ERROR
     ).build()
   }
-
 }
