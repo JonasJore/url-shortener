@@ -9,7 +9,6 @@ private val logger: Logger = Logger.getLogger(RedirectionService::class.java)
 private const val MATCH_ON_PROTOCOL = "^(?:(http)(s?)://)"
 
 class RedirectionService {
-  private val urlShortenerService = UrlShortenerService()
 
   private fun hasProtocol(url: String): Boolean =
       MATCH_ON_PROTOCOL.toRegex()
@@ -24,15 +23,11 @@ class RedirectionService {
             ).location(it).build()
           }
 
-
-  fun redirectToUrl(identifier: String): Response {
-    val url = urlShortenerService.getByIdOrShortened(identifier).url
-    logger.info("redirecting to $url")
-    return when {
-      !hasProtocol(url) -> buildUrl("https://$url")
-      else -> buildUrl(url)
-    }
-  }
+  fun redirectToUrl(identifier: String): Response =
+      when {
+        !hasProtocol(identifier) -> buildUrl("https://$identifier")
+        else -> buildUrl(identifier)
+      }
 }
 
 infix fun Regex.containsMatchIn(s: String): Boolean =
