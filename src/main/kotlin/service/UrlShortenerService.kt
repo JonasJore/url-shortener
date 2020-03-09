@@ -1,6 +1,6 @@
 package service
 
-import ShortenedUrlDTO
+import domain.ShortenedUrlDTO
 import ShortenedUrlMapper
 import ShortenedUrlSingleton
 import domain.ShortenedUrl
