@@ -36,7 +36,6 @@ class FileOperations {
     writeToFile(ShortenedUrls(theList))
   }
 
-  // TODO: finnes det en mer clean måte å gjøre dette på? 
   fun changeById(urlChangeRequest: UrlChangeRequest, idToChange: String) {
     urlChangeRequest.listOfUrls
         .filter { it.id == idToChange }
