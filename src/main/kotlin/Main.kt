@@ -1,5 +1,10 @@
-import Jetty.JettyServer
+import app.Application
 
-fun main() {
-  JettyServer().startServer()
+class Main {
+  companion object {
+    @JvmStatic
+    fun main(args: Array<String>) {
+      Application.start()
+    }
+  }
 }
