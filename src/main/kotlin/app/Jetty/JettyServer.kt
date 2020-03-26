@@ -1,4 +1,4 @@
-package Jetty
+package app.Jetty
 
 import org.apache.log4j.Logger
 import org.eclipse.jetty.server.Server
