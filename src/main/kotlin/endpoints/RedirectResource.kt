@@ -1,6 +1,6 @@
 package endpoints
 
-import RedirectionException
+import exceptions.RedirectionException
 import org.apache.log4j.Logger
 import service.RedirectionService
 import service.UrlShortenerService

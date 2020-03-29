@@ -1,4 +1,4 @@
-package app.Jetty
+package app.jetty
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
