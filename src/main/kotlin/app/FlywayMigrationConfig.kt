@@ -11,7 +11,7 @@ class FlywayMigrationConfig {
     logger.info("Performing migration")
     try {
       Flyway(Flyway.configure()
-          .dataSource(connectionSource, userName, "root")
+          .dataSource(connectionSource, userName, password)
       ).migrate()
     } catch (ex: Exception) {
       throw FlywayMigrationException("Migration failed, $ex")
