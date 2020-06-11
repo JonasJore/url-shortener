@@ -1,5 +1,6 @@
 package endpoints
 
+import app.jdbi
 import domain.ShortenedUrlDTO
 import domain.ShortenedUrl
 import org.apache.log4j.Logger
@@ -49,6 +50,17 @@ class ShortenedUrlResource {
   @Produces(MediaType.APPLICATION_JSON)
   fun getUrls(): List<ShortenedUrl> =
       fileOperations.readFileContent()
+
+  @Path("/dbtest")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  fun testDb(): List<Map<String, Any>> {
+    print("fetching all shortened urls")
+    return jdbi().open()
+        .createQuery("select * from shortened_url;")
+        .mapToMap()
+        .list()
+  }
 
   @Path("/url/{id}")
   @DELETE

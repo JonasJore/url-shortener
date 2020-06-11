@@ -1,6 +1,6 @@
 package app
 
-import app.jetty.JettyServer
+import jetty.JettyServer
 
 class Application {
   companion object {
