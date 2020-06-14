@@ -46,5 +46,4 @@ class FileOperations {
 
     writeToFile(ShortenedUrls(urlChangeRequest.listOfUrls))
   }
-
 }
