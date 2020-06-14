@@ -1,31 +1,29 @@
 package service
 
-import domain.ShortenedUrlDTO
 import ShortenedUrlMapper
-import ShortenedUrlSingleton
+import app.jdbi
+import domain.toShortenedUrl
 import domain.ShortenedUrl
-import domain.ShortenedUrls
-import domain.UrlChangeRequest
+import domain.ShortenedUrlDTO
 import org.apache.log4j.Logger
 import toShortenedUrl
 import util.AlphanumericHashGenerator
-import util.FileOperations
-import java.io.IOException
 
 private val logger: Logger = Logger.getLogger(UrlShortenerService::class.java)
 
 class UrlShortenerService {
   private fun generateHash() = AlphanumericHashGenerator().generateHash()
+  private val jdbi = jdbi()
 
-  fun findUniqueUrl(uniqueUrl: String): ShortenedUrl? =
-      FileOperations()
-          .readFileContent()
-          .find { it.id == uniqueUrl }
+  fun getUrls(): List<ShortenedUrl> =
+      jdbi.open()
+          .createQuery("SELECT * FROM shortened_url")
+          .mapToMap()
+          .list()
+          .toShortenedUrl()
 
   fun getByIdOrShortened(identifier: String): ShortenedUrl =
-      FileOperations()
-          .readFileContent()
-          .filter { it.id == identifier || it.shortened == identifier }[0]
+      getUrls().first { it.id == identifier || it.shortened == identifier }
 
   private fun prepareShortenedUrl(shortenedUrl: ShortenedUrlDTO): ShortenedUrl =
       ShortenedUrlMapper(generateHash(), shortenedUrl.url, shortenedUrl.shortenedUrl)
@@ -33,32 +31,24 @@ class UrlShortenerService {
 
   fun addnewShortenedUrl(shortenedUrlDTO: ShortenedUrlDTO) {
     val shortenedUrl = prepareShortenedUrl(shortenedUrlDTO)
-    logger.info(FileOperations().readUrlsFromFile())
-    val shortenedUrls: ShortenedUrls = ShortenedUrlSingleton.addToShortenedUrls(shortenedUrl)
-
-    try {
-      FileOperations().writeToFile(shortenedUrls)
-      logger.info("written to file")
-    } catch (ex: IOException) {
-      logger.error("could not write to file", ex)
-    }
+    jdbi.withHandle<Unit, Exception> { it.execute(
+        "INSERT INTO shortened_url(id, url, shortened) VALUES (?, ?, ?);",
+        shortenedUrl.id, shortenedUrl.url, shortenedUrl.shortened
+    ) }
+    logger.info("New url successfully added: $shortenedUrl")
   }
 
-  fun changeUrlById(id: String, shortenedUrlDTO: ShortenedUrlDTO) {
-    val urlList = FileOperations().readFileContent()
-    val indexForChange: Int = urlList
-        .indexOf(urlList.find { it.id == id })
-    val mappedShortenedUrl = prepareShortenedUrl(shortenedUrlDTO)
-
-    val urlChangeRequest = UrlChangeRequest(
-        id,
-        indexForChange,
-        urlList,
-        mappedShortenedUrl
-    )
-
-    FileOperations().changeById(urlChangeRequest, id)
+  fun deleteUrlById(id: String) {
+    jdbi.useHandle<Exception> { it.execute("DELETE FROM shortened_url WHERE id = ?", id) }
+    logger.info("Deleted url with id: $id")
   }
 
+  fun changeById(id: String, shortenedUrlDTO: ShortenedUrlDTO) {
+    jdbi.useHandle<Exception> { it.execute(
+        "UPDATE shortened_url SET url = ?, shortened = ? where id = ?",
+        shortenedUrlDTO.url, shortenedUrlDTO.shortenedUrl, id
+    ) }
+    logger.info("Updated url with id: $id")
+  }
 }
 

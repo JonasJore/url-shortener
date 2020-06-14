@@ -3,6 +3,7 @@ package endpoints
 import app.jdbi
 import domain.ShortenedUrlDTO
 import domain.ShortenedUrl
+import domain.toShortenedUrl
 import org.apache.log4j.Logger
 import service.UrlShortenerService
 import util.FileOperations
@@ -42,31 +43,22 @@ class ShortenedUrlResource {
   @Path("/url/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  fun getUrlById(@PathParam("id") id: String): ShortenedUrl =
-      shortenUrlService.getByIdOrShortened(id)
+  fun getUrlById(@PathParam("id") id: String): ShortenedUrl {
+    return shortenUrlService.getByIdOrShortened(id)
+  }
 
   @Path("/urls")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  fun getUrls(): List<ShortenedUrl> =
-      fileOperations.readFileContent()
-
-  @Path("/dbtest")
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  fun testDb(): List<Map<String, Any>> {
+  fun getAllUrls(): List<ShortenedUrl> {
     print("fetching all shortened urls")
-    return jdbi().open()
-        .createQuery("select * from shortened_url;")
-        .mapToMap()
-        .list()
+    return shortenUrlService.getUrls()
   }
 
   @Path("/url/{id}")
   @DELETE
   fun deleteUrl(@PathParam("id") id: String): Response = try {
-    fileOperations.deleteById(id)
-    logger.info(fileOperations.readFileContent())
+    shortenUrlService.deleteUrlById(id)
     Response.status(Response.Status.ACCEPTED).build()
   } catch (ex: Exception) {
     logger.error("something wrong while deleting url", ex)
@@ -79,7 +71,7 @@ class ShortenedUrlResource {
   @PUT
   @Consumes("application/json")
   fun changeUrlById(@PathParam("id") id: String, shortenedUrlDTO: ShortenedUrlDTO): Response = try {
-    shortenUrlService.changeUrlById(id, shortenedUrlDTO)
+    shortenUrlService.changeById(id, shortenedUrlDTO)
     Response.ok().build()
   } catch (ex: Exception) {
     logger.error("something wrong while changing url", ex)
