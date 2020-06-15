@@ -1,12 +1,11 @@
 package endpoints
 
-import app.jdbi
 import domain.ShortenedUrlDTO
 import domain.ShortenedUrl
-import domain.toShortenedUrl
+import domain.ShortenedUrls
+import domain.UnshortenedUrlResponse
 import org.apache.log4j.Logger
 import service.UrlShortenerService
-import util.FileOperations
 import javax.ws.rs.Consumes
 import javax.ws.rs.DELETE
 import javax.ws.rs.GET
@@ -23,7 +22,6 @@ private val logger: Logger = Logger.getLogger(ShortenedUrlResource::class.java)
 @Path("/api")
 class ShortenedUrlResource {
   private val shortenUrlService = UrlShortenerService()
-  private val fileOperations = FileOperations()
 
   @Path("/shorten-url")
   @POST
@@ -40,6 +38,12 @@ class ShortenedUrlResource {
     ).build()
   }
 
+  @Path("/unshorten-url/{id}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  fun unshortenUrl(@PathParam("id") id: String): UnshortenedUrlResponse =
+      UnshortenedUrlResponse(shortenUrlService.getOriginalUrlById(id))
+
   @Path("/url/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -50,7 +54,7 @@ class ShortenedUrlResource {
   @Path("/urls")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  fun getAllUrls(): List<ShortenedUrl> {
+  fun getAllUrls(): ShortenedUrls {
     print("fetching all shortened urls")
     return shortenUrlService.getUrls()
   }

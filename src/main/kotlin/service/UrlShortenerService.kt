@@ -5,6 +5,7 @@ import app.jdbi
 import domain.toShortenedUrl
 import domain.ShortenedUrl
 import domain.ShortenedUrlDTO
+import domain.ShortenedUrls
 import org.apache.log4j.Logger
 import toShortenedUrl
 import util.AlphanumericHashGenerator
@@ -15,15 +16,20 @@ class UrlShortenerService {
   private fun generateHash() = AlphanumericHashGenerator().generateHash()
   private val jdbi = jdbi()
 
-  fun getUrls(): List<ShortenedUrl> =
-      jdbi.open()
-          .createQuery("SELECT * FROM shortened_url")
-          .mapToMap()
-          .list()
-          .toShortenedUrl()
+  fun getUrls(): ShortenedUrls =
+      ShortenedUrls(
+         shortenedUrlList = jdbi.open()
+              .createQuery("SELECT * FROM shortened_url")
+              .mapToMap()
+              .list()
+              .toShortenedUrl()
+      )
+
+  fun getOriginalUrlById(identifier: String): String =
+      getUrls().shortenedUrlList.first { it.id == identifier }.url
 
   fun getByIdOrShortened(identifier: String): ShortenedUrl =
-      getUrls().first { it.id == identifier || it.shortened == identifier }
+      getUrls().shortenedUrlList.first { it.id == identifier || it.shortened == identifier }
 
   private fun prepareShortenedUrl(shortenedUrl: ShortenedUrlDTO): ShortenedUrl =
       ShortenedUrlMapper(generateHash(), shortenedUrl.url, shortenedUrl.shortenedUrl)
