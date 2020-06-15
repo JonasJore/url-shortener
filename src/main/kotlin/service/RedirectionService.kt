@@ -10,17 +10,17 @@ private const val MATCH_ON_PROTOCOL = "^(?:(http)(s?)://)"
 
 class RedirectionService {
 
-  private fun hasProtocol(url: String): Boolean =
+  fun hasProtocol(url: String): Boolean =
       MATCH_ON_PROTOCOL.toRegex()
           .let { it containsMatchIn url }
 
   private fun buildUrl(redirectUrlString: String): Response =
       URL(redirectUrlString)
           .toURI()
-          .let {
+          .let { uri ->
             Response.status(
                 Response.Status.MOVED_PERMANENTLY
-            ).location(it).build()
+            ).location(uri).build()
           }
 
   fun redirectToUrl(identifier: String): Response =
