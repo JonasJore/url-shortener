@@ -56,7 +56,7 @@ class ShortenedUrlResource {
   @Produces(MediaType.APPLICATION_JSON)
   fun getAllUrls(): ShortenedUrls {
     print("fetching all shortened urls")
-    return shortenUrlService.getUrls()
+    return shortenUrlService.getAllUrls()
   }
 
   @Path("/url/{id}")
@@ -78,7 +78,7 @@ class ShortenedUrlResource {
     shortenUrlService.changeById(id, shortenedUrlDTO)
     Response.ok().build()
   } catch (ex: Exception) {
-    logger.error("something wrong while changing url", ex)
+    logger.error("Something wrong happened while changing url", ex)
     Response.status(
         Response.Status.INTERNAL_SERVER_ERROR
     ).build()
