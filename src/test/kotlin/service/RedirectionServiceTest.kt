@@ -29,5 +29,4 @@ class RedirectionServiceTest {
     val uri = "https://www.denneurlharprotokollladenvareifred.no"
     assertThat(RedirectionService().redirectToUrl(uri).status).isEqualTo(MOVED_PERMANENTLY)
   }
-
 }
