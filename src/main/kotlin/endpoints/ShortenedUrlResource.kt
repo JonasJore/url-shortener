@@ -55,7 +55,7 @@ class ShortenedUrlResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   fun getAllUrls(): ShortenedUrls {
-    print("fetching all shortened urls")
+    logger.info("Fetching all urls")
     return shortenUrlService.getAllUrls()
   }
 

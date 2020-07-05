@@ -16,7 +16,7 @@ data class ShortenedUrl(
   }
 }
 
-fun <T> List<Map<String, T>>.toShortenedUrl(): List<ShortenedUrl> =
+fun <T>List<Map<String, T>>.toShortenedUrl(): List<ShortenedUrl> =
     this.map { shortenedUrl ->
       ShortenedUrl(
           id = shortenedUrl["id"].toString(),

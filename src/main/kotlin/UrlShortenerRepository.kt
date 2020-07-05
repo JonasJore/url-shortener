@@ -12,7 +12,7 @@ class UrlShortenerRepository {
 
   private fun getUrls(): ShortenedUrls =
       ShortenedUrls(
-          shortenedUrlList = jdbi.open()
+          shortenedUrls = jdbi.open()
               .createQuery("SELECT * FROM shortened_url")
               .mapToMap()
               .list()
@@ -23,17 +23,21 @@ class UrlShortenerRepository {
     getUrls()
 
   fun getUrlByIdOrShortened(identifier: String) =
-      getUrls().shortenedUrlList.first { it.id == identifier || it.shortened == identifier }
+      getUrls().shortenedUrls.first { it.id == identifier || it.shortened == identifier }
 
   // TODO: this is for unshortening, make that more obvious...
   fun getOriginalUrlById(identifier: String) =
-      getUrls().shortenedUrlList.first { it.id == identifier }.url
+      getUrls().shortenedUrls.first { it.id == identifier }.url
 
   fun addUrl(shortenedUrl: ShortenedUrl) {
     jdbi.withHandle<Unit, Exception> { it.execute(
         "INSERT INTO shortened_url(id, url, shortened) VALUES (?, ?, ?);",
         shortenedUrl.id, shortenedUrl.url, shortenedUrl.shortened
     ) }
+  }
+
+  fun urlIdExists(identifier: String): Boolean {
+    return getUrls().shortenedUrls.map { it.id }.contains(identifier)
   }
 
   fun deleteUrl(identifier: String) {

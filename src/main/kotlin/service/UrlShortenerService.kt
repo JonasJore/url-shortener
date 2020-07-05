@@ -10,12 +10,13 @@ import domain.ShortenedUrls
 import org.apache.log4j.Logger
 import toShortenedUrl
 import util.AlphanumericHashGenerator
+import validShortenedUrlDTO
+import java.lang.Exception
 
 private val logger: Logger = Logger.getLogger(UrlShortenerService::class.java)
 
 class UrlShortenerService {
   private val urlShortenerRepository = UrlShortenerRepository()
-
   private val generateHash = AlphanumericHashGenerator().generateHash()
 
   private fun mapToShortenedUrl(shortenedUrl: ShortenedUrlDTO): ShortenedUrl =
@@ -32,9 +33,13 @@ class UrlShortenerService {
       urlShortenerRepository.getUrlByIdOrShortened(identifier)
 
   fun addnewShortenedUrl(shortenedUrlDTO: ShortenedUrlDTO) {
-    val shortenedUrl = mapToShortenedUrl(shortenedUrlDTO)
-    urlShortenerRepository.addUrl(shortenedUrl)
-    logger.info("New url successfully added: $shortenedUrl, with id: ${shortenedUrl.id}")
+    if(validShortenedUrlDTO(shortenedUrlDTO)) {
+      val shortenedUrl = mapToShortenedUrl(shortenedUrlDTO)
+      urlShortenerRepository.addUrl(shortenedUrl)
+      logger.info("New url successfully added: $shortenedUrl, with id: ${shortenedUrl.id}")
+    }
+
+    throw Exception("Invalid url given")
   }
 
   fun deleteUrlById(identifier: String) {
@@ -42,8 +47,12 @@ class UrlShortenerService {
   }
 
   fun changeById(id: String, shortenedUrlDTO: ShortenedUrlDTO) {
-    urlShortenerRepository.updateById(id, shortenedUrlDTO)
-    logger.info("Updated url with id: $id")
+    if (validShortenedUrlDTO(shortenedUrlDTO)) {
+      urlShortenerRepository.updateById(id, shortenedUrlDTO)
+      logger.info("Updated url with id: $id")
+    } 
+
+    throw Exception("invalid url given")
   }
 }
 
