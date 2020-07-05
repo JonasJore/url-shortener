@@ -31,10 +31,10 @@ mvn clean install
 While a url-shortener should not be that advanced to actually build for yourself, i decided to build this project because
 i wanted to have a project to work on during my freetime.
 
-While working as a developer all the projects i have been working on professionally has already been setup. So mainly i
-built this project just to teach myself how all the libraries used in this project is setup and working.
+Also, while working as a developer, all the projects i have been working on professionally has already been setup. So mainly i
+built this project just to teach myself how all the technologies used in this project is setup and working.
 
-libraries/tools/frameworks used to build this project is:
+Technologies used to help me build this project is:
 
 * Flyway - Automated database migrations
 * SLF4J - Logging
