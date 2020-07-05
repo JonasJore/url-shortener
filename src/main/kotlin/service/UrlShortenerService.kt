@@ -44,7 +44,7 @@ class UrlShortenerService {
   fun changeById(id: String, shortenedUrlDTO: ShortenedUrlDTO) {
     urlShortenerRepository.updateById(id, shortenedUrlDTO)
     logger.info("Updated url with id: $id")
-  
+
   }
 }
 
