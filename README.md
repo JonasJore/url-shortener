@@ -40,8 +40,8 @@ Technologies used to help me build this project is:
 * SLF4J - Logging
 * Jackson faster-xml - serializing/deserializing json object to POJO/POKO
 * JDBI - abstraction libraries for interacting with the database
-* Jersey - HTTP-server
-* Jetty - annotations for creating RESTful-endpoints
+* Jetty - HTTP-server
+* Jersey - annotations for creating RESTful-endpoints
 
 Testing:
 * Junit5 - Running unit-tests
