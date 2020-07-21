@@ -4,6 +4,7 @@ import domain.ShortenedUrlDTO
 import domain.ShortenedUrls
 import domain.toShortenedUrl
 import org.apache.log4j.Logger
+import java.time.LocalDateTime
 
 private val logger: Logger = Logger.getLogger(UrlShortenerRepository::class.java)
 
@@ -29,10 +30,11 @@ class UrlShortenerRepository {
   fun getOriginalUrlById(identifier: String) =
       getUrls().shortenedUrls.first { it.id == identifier }.url
 
+  // TODO: localdatetime is defined directly here for convenience fix later..
   fun addUrl(shortenedUrl: ShortenedUrl) {
     jdbi.withHandle<Unit, Exception> { it.execute(
-        "INSERT INTO shortened_url(id, url, shortened) VALUES (?, ?, ?);",
-        shortenedUrl.id, shortenedUrl.url, shortenedUrl.shortened
+        "INSERT INTO shortened_url(id, url, shortened, created_date) VALUES (?, ?, ?, ?);",
+        shortenedUrl.id, shortenedUrl.url, shortenedUrl.shortened, LocalDateTime.now()
     ) }
   }
 
