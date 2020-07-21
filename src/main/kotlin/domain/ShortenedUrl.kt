@@ -7,7 +7,7 @@ data class ShortenedUrl(
     val id: String,
     var url: String,
     var shortened: String,
-    var createdDate: LocalDateTime
+    var createdDate: LocalDateTime?
 ) {
   companion object {
     @JsonCreator
@@ -17,7 +17,7 @@ data class ShortenedUrl(
           id = "",
           url = "",
           shortened = "",
-          createdDate = LocalDateTime.MIN
+          createdDate = null
       )
     }
   }
@@ -29,6 +29,6 @@ fun <T>List<Map<String, T>>.toShortenedUrl(): List<ShortenedUrl> =
           id = shortenedUrl["id"].toString(),
           url = shortenedUrl["url"].toString(),
           shortened = shortenedUrl["shortened"].toString(),
-          createdDate = LocalDateTime.now()
+          createdDate = null
       )
     }

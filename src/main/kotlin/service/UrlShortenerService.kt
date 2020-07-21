@@ -11,6 +11,7 @@ import org.apache.log4j.Logger
 import toShortenedUrl
 import util.AlphanumericHashGenerator
 import java.lang.Exception
+import java.time.LocalDateTime
 
 private val logger: Logger = Logger.getLogger(UrlShortenerService::class.java)
 
@@ -19,7 +20,7 @@ class UrlShortenerService {
   private val generateHash = AlphanumericHashGenerator().generateHash()
 
   private fun mapToShortenedUrl(shortenedUrl: ShortenedUrlDTO): ShortenedUrl =
-      ShortenedUrlMapper(generateHash, shortenedUrl.url, shortenedUrl.shortenedUrl, shortenedUrl.createdDate)
+      ShortenedUrlMapper(generateHash, shortenedUrl.url, shortenedUrl.shortenedUrl, LocalDateTime.now())
           .toShortenedUrl()
 
   fun getOriginalUrlById(identifier: String): String =
