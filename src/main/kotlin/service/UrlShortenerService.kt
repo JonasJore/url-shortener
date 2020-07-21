@@ -19,7 +19,7 @@ class UrlShortenerService {
   private val generateHash = AlphanumericHashGenerator().generateHash()
 
   private fun mapToShortenedUrl(shortenedUrl: ShortenedUrlDTO): ShortenedUrl =
-      ShortenedUrlMapper(generateHash, shortenedUrl.url, shortenedUrl.shortenedUrl)
+      ShortenedUrlMapper(generateHash, shortenedUrl.url, shortenedUrl.shortenedUrl, shortenedUrl.createdDate)
           .toShortenedUrl()
 
   fun getOriginalUrlById(identifier: String): String =
