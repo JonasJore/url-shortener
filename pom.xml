@@ -11,7 +11,7 @@
     <properties>
         <kotlin.version>1.3.61</kotlin.version>
         <jersey.version>2.30</jersey.version>
-        <slf4j.version>1.7.30</slf4j.version>
+        <slf4j.version>1.7.28</slf4j.version>
         <jackson.version>2.10.1</jackson.version>
         <junit.jupiter.version>5.6.0</junit.jupiter.version>
         <mysql.version>8.0.19</mysql.version>
@@ -23,6 +23,16 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
@@ -69,16 +79,6 @@
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>com.jcabi</groupId>

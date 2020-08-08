@@ -1,15 +1,12 @@
 package service
 
-import org.apache.log4j.Logger
+import util.containsMatchIn
 import java.net.URL
 import javax.ws.rs.core.Response
-
-private val logger: Logger = Logger.getLogger(RedirectionService::class.java)
 
 private const val MATCH_ON_PROTOCOL = "^(?:(http)(s?)://)"
 
 class RedirectionService {
-
   fun hasProtocol(url: String): Boolean =
       MATCH_ON_PROTOCOL.toRegex()
           .let { it containsMatchIn url }
@@ -29,6 +26,3 @@ class RedirectionService {
         else -> buildUrl(identifier)
       }
 }
-
-infix fun Regex.containsMatchIn(s: String): Boolean =
-    this.containsMatchIn(s)

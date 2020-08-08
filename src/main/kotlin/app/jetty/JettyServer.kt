@@ -1,14 +1,16 @@
 package jetty
 
 import app.jetty.ObjectMapperProvider
-import org.apache.log4j.Logger
 import org.eclipse.jetty.server.Server
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory
 import org.glassfish.jersey.server.ResourceConfig
+import org.slf4j.LoggerFactory
 import javax.ws.rs.core.UriBuilder
 
+val logger = LoggerFactory.getLogger(JettyServer::class.java)
+
 class JettyServer {
-  private val logger: Logger = Logger.getLogger(Server::class.java)
+  val logger = LoggerFactory.getLogger(JettyServer::class.java)
 
   fun startServer() {
     logger.info("Firing up the server")
@@ -24,8 +26,8 @@ class JettyServer {
   }
 }
 
-inline fun Server.use(block: (Server) -> Unit) = try {
-  block(this)
+inline fun Server.use(jettyInstance: (Server) -> Unit) = try {
+  jettyInstance(this)
 } finally {
   this.destroy()
 }

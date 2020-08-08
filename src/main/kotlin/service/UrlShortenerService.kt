@@ -7,13 +7,10 @@ import domain.toShortenedUrl
 import domain.ShortenedUrl
 import domain.ShortenedUrlDTO
 import domain.ShortenedUrls
-import org.apache.log4j.Logger
 import toShortenedUrl
 import util.AlphanumericHashGenerator
 import java.lang.Exception
 import java.time.LocalDateTime
-
-private val logger: Logger = Logger.getLogger(UrlShortenerService::class.java)
 
 class UrlShortenerService {
   private val urlShortenerRepository = UrlShortenerRepository()
@@ -35,7 +32,6 @@ class UrlShortenerService {
   fun addnewShortenedUrl(shortenedUrlDTO: ShortenedUrlDTO) {
     val shortenedUrl = mapToShortenedUrl(shortenedUrlDTO)
     urlShortenerRepository.addUrl(shortenedUrl)
-    logger.info("New url successfully added: $shortenedUrl, with id: ${shortenedUrl.id}")
   }
 
   fun deleteUrlById(identifier: String) {
@@ -44,8 +40,6 @@ class UrlShortenerService {
 
   fun changeById(id: String, shortenedUrlDTO: ShortenedUrlDTO) {
     urlShortenerRepository.updateById(id, shortenedUrlDTO)
-    logger.info("Updated url with id: $id")
-
   }
 }
 
