@@ -48,7 +48,7 @@ Testing:
 * Mockito - Mocking library
 
 
-Packagin:
+Packaging:
 * The application has no automated way of packaging into an executable jar yet, so this can be done with:
 ```
 mvn clean compile assembly:single
