@@ -46,3 +46,10 @@ Technologies used to help me build this project is:
 Testing:
 * Junit5 - Running unit-tests
 * Mockito - Mocking library
+
+
+Packagin:
+* The application has no automated way of packaging into an executable jar yet, so this can be done with:
+```
+mvn clean compile assembly:single
+```
