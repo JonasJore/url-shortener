@@ -5,7 +5,7 @@ data class ShortenedUrlMapper(
     val identifier: String,
     val originalUrl: String,
     val shortenedUrl: String,
-    val createdDate: LocalDateTime
+    val createdDate: String
 )
 
 fun ShortenedUrlMapper.toShortenedUrl(): ShortenedUrl = ShortenedUrl(

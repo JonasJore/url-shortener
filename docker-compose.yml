@@ -1,0 +1,28 @@
+version: "3"
+services:
+  api:
+    build: .
+    restart: on-failure
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+  db:
+    image: mysql
+    container_name: db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=url_shortener_db
+    tty: true
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

@@ -2,14 +2,11 @@ package service
 
 import ShortenedUrlMapper
 import UrlShortenerRepository
-import app.jdbi
-import domain.toShortenedUrl
 import domain.ShortenedUrl
 import domain.ShortenedUrlDTO
 import domain.ShortenedUrls
 import toShortenedUrl
 import util.AlphanumericHashGenerator
-import java.lang.Exception
 import java.time.LocalDateTime
 
 class UrlShortenerService {
@@ -17,7 +14,7 @@ class UrlShortenerService {
   private val generateHash = AlphanumericHashGenerator().generateHash()
 
   private fun mapToShortenedUrl(shortenedUrl: ShortenedUrlDTO): ShortenedUrl =
-      ShortenedUrlMapper(generateHash, shortenedUrl.url, shortenedUrl.shortenedUrl, LocalDateTime.now())
+      ShortenedUrlMapper(generateHash, shortenedUrl.url, shortenedUrl.shortenedUrl, LocalDateTime.now().toString())
           .toShortenedUrl()
 
   fun getOriginalUrlById(identifier: String): String =
