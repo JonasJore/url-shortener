@@ -1,9 +1,12 @@
 package endpoints
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import domain.ShortenedUrlDTO
 import domain.ShortenedUrl
 import domain.ShortenedUrls
 import domain.UnshortenedUrlResponse
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import service.UrlShortenerService
 import javax.ws.rs.Consumes
@@ -19,7 +22,8 @@ import javax.ws.rs.core.Response
 
 @Path("/api")
 class ShortenedUrlResource {
-    val logger = LoggerFactory.getLogger(ShortenedUrlResource::class.java)
+    private val logger: Logger = LoggerFactory.getLogger(ShortenedUrlResource::class.java)
+    private val objectMapper: ObjectMapper = ObjectMapper()
     private val shortenUrlService = UrlShortenerService()
 
     @Path("/shorten-url")
@@ -42,10 +46,10 @@ class ShortenedUrlResource {
 
     @Path("/unshorten-url/{id}")
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    fun unshortenUrl(@PathParam("id") id: String): UnshortenedUrlResponse {
+    fun unshortenUrl(@PathParam("id") id: String): Response {
         logger.info("Unshortening url with id: $id")
-        return UnshortenedUrlResponse(shortenUrlService.getOriginalUrlById(id))
+        val unshortenedUrlResponse = objectMapper.writeValueAsString(UnshortenedUrlResponse(shortenUrlService.getOriginalUrlById(id)))
+        return Response.accepted(unshortenedUrlResponse).build()
     }
 
     @Path("/url/{id}")
@@ -59,9 +63,10 @@ class ShortenedUrlResource {
     @Path("/urls")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    fun getAllUrls(): ShortenedUrls {
+    fun getAllUrls(): Response {
         logger.info("Looking up all urls")
-        return shortenUrlService.getAllUrls()
+        val allUrls = objectMapper.writeValueAsString(shortenUrlService.getAllUrls())
+        return Response.accepted(allUrls).build()
     }
 
     @Path("/url/{id}")
