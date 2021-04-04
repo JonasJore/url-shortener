@@ -39,4 +39,3 @@ class UrlShortenerService {
     urlShortenerRepository.updateById(id, shortenedUrlDTO)
   }
 }
-
