@@ -1,7 +1,5 @@
 package app
 
-import app.jetty.JettyServer
-
 class Application {
   companion object {
     @JvmStatic
