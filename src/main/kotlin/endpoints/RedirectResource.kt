@@ -1,18 +1,19 @@
 package endpoints
 
 import exceptions.RedirectionException
-import service.RedirectionService
-import service.UrlShortenerService
 import isUrlValid
-import org.slf4j.LoggerFactory
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.core.Response
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import service.RedirectionService
+import service.UrlShortenerService
 
 @Path("/")
 class RedirectResource {
-  val logger = LoggerFactory.getLogger(RedirectResource::class.java)
+  private val logger: Logger = LoggerFactory.getLogger(RedirectResource::class.java)
 
   private val redirectionService = RedirectionService()
   private val urlShortenerService = UrlShortenerService()

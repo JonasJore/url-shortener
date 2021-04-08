@@ -5,29 +5,25 @@ import UrlShortenerRepository
 import domain.ShortenedUrl
 import domain.ShortenedUrlDTO
 import domain.ShortenedUrls
+import java.time.LocalDateTime
+import java.util.UUID
 import toShortenedUrl
 import util.AlphanumericHashGenerator
-import java.time.LocalDateTime
 
 class UrlShortenerService {
   private val urlShortenerRepository = UrlShortenerRepository()
-  private val generateHash = AlphanumericHashGenerator().generateHash()
-
-  private fun mapToShortenedUrl(shortenedUrl: ShortenedUrlDTO): ShortenedUrl =
-      ShortenedUrlMapper(generateHash, shortenedUrl.url, shortenedUrl.shortenedUrl, LocalDateTime.now().toString())
-          .toShortenedUrl()
 
   fun getOriginalUrlById(identifier: String): String =
-      urlShortenerRepository.getOriginalUrlById(identifier)
+    urlShortenerRepository.getOriginalUrlById(identifier)
 
   fun getAllUrls(): ShortenedUrls =
-      urlShortenerRepository.getAllUrls()
+    urlShortenerRepository.getAllUrls()
 
   fun getByIdOrShortened(identifier: String): ShortenedUrl =
-      urlShortenerRepository.getUrlByIdOrShortened(identifier)
+    urlShortenerRepository.getUrlByIdOrShortened(identifier)
 
   fun addnewShortenedUrl(shortenedUrlDTO: ShortenedUrlDTO) {
-    val shortenedUrl = mapToShortenedUrl(shortenedUrlDTO)
+    val shortenedUrl = shortenedUrlDTO.mapToShortenedUrl()
     urlShortenerRepository.addUrl(shortenedUrl)
   }
 
@@ -37,5 +33,19 @@ class UrlShortenerService {
 
   fun changeById(id: String, shortenedUrlDTO: ShortenedUrlDTO) {
     urlShortenerRepository.updateById(id, shortenedUrlDTO)
+  }
+}
+
+private fun ShortenedUrlDTO.mapToShortenedUrl(): ShortenedUrl {
+  val uuid = UUID.randomUUID().toString()
+  val id = AlphanumericHashGenerator.generateHash()
+  with(this) {
+    return ShortenedUrlMapper(
+      uuid = uuid,
+      identifier = id,
+      originalUrl = url,
+      shortenedUrl = shortenedUrl,
+      createdDate = LocalDateTime.now().toString()
+    ).toShortenedUrl()
   }
 }

@@ -1,17 +1,16 @@
-package jetty
+package app
 
-import app.jetty.ObjectMapperProvider
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
 import org.eclipse.jetty.server.Server
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory
 import org.glassfish.jersey.server.ResourceConfig
 import org.slf4j.LoggerFactory
 import javax.ws.rs.core.UriBuilder
+import org.slf4j.Logger
 
-val logger = LoggerFactory.getLogger(JettyServer::class.java)
+val logger: Logger = LoggerFactory.getLogger(JettyServer::class.java)
 
 class JettyServer {
-  val logger = LoggerFactory.getLogger(JettyServer::class.java)
-
   fun startServer() {
     logger.info("Firing up the server")
     JettyHttpContainerFactory.createServer(
@@ -20,7 +19,7 @@ class JettyServer {
             .port(8080)
             .build(),
         ResourceConfig()
-            .register(ObjectMapperProvider::class.java)
+            .register(JacksonJsonProvider::class.java)
             .packages("endpoints")
     ).use { server: Server -> server.join() }
   }

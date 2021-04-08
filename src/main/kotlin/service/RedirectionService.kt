@@ -1,6 +1,5 @@
 package service
 
-import util.containsMatchIn
 import java.net.URL
 import javax.ws.rs.core.Response
 
@@ -8,8 +7,7 @@ private const val MATCH_ON_PROTOCOL = "^(?:(http)(s?)://)"
 
 class RedirectionService {
   fun hasProtocol(url: String): Boolean =
-      MATCH_ON_PROTOCOL.toRegex()
-          .let { it containsMatchIn url }
+    MATCH_ON_PROTOCOL.toRegex().containsMatchIn(url)
 
   private fun buildUrl(redirectUrlString: String): Response =
       URL(redirectUrlString)
