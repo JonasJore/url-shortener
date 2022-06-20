@@ -9,7 +9,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <kotlin.version>1.3.61</kotlin.version>
+    <kotlin.version>1.6.0</kotlin.version>
     <jersey.version>2.30</jersey.version>
     <slf4j.version>1.7.28</slf4j.version>
     <jackson.version>2.12.1</jackson.version>
