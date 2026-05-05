@@ -1,1 +1,0 @@
-ALTER TABLE shortened_url ADD created_date VARCHAR(255);

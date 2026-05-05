@@ -1,55 +1,79 @@
 # url-shortener
-Kotlin project for shortening a given url, stored in a local MySQL database.
 
-#### Setting up development environment:
+This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
-This application is interacting with a MySQL database so having that installed is a requirement.
+If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
-Setting up the database for use in the project is not automated yet, so that needs to be done manually like so:
+## Running the application in dev mode
 
-```mysql-sql
-CREATE DATABASE url_shortener_db;
+You can run your application in dev mode that enables live coding using:
+
+```shell script
+./gradlew quarkusDev
 ```
 
-There has previously been issues with the MySQL-server has a different timezone set that the default timezone used by JDBC (still working on a solution for setting the timezone in the JDBI instance). So this also needs to be done manually with:
+> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
 
-```mysql-sql
--- '+2:00' is the local timezone for this sample
-SET GLOBAL time_zone = '+2:00';
-``` 
+## Packaging and running the application
 
-Great! 🎉
-Now the database should be migrated correctly, and is now ready for some local testing and development
+The application can be packaged using:
 
-Now just run this command to build an executable jar:
-```
-mvn clean install
+```shell script
+./gradlew build
 ```
 
-#### My purpose for building this project:
+It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
 
-While a url-shortener should not be that advanced to actually build for yourself, i decided to build this project because
-i wanted to have a project to work on during my freetime.
+The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
 
-Also, while working as a developer, all the projects i have been working on professionally has already been setup. So mainly i
-built this project just to teach myself how all the technologies used in this project is setup and working.
+If you want to build an _über-jar_, execute the following command:
 
-Technologies used to help me build this project is:
-
-* Flyway - Automated database migrations
-* SLF4J - Logging
-* Jackson faster-xml - serializing/deserializing json object to POJO/POKO
-* JDBI - abstraction libraries for interacting with the database
-* Jetty - HTTP-server
-* Jersey - annotations for creating RESTful-endpoints
-
-Testing:
-* Junit5 - Running unit-tests
-* Mockito - Mocking library
-
-
-Packaging:
-* The application has no automated way of packaging into an executable jar yet, so this can be done with:
+```shell script
+./gradlew build -Dquarkus.package.jar.type=uber-jar
 ```
-mvn clean compile assembly:single
+
+The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
+
+## Creating a native executable
+
+You can create a native executable using:
+
+```shell script
+./gradlew build -Dquarkus.native.enabled=true
 ```
+
+Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+
+```shell script
+./gradlew build -Dquarkus.native.enabled=true -Dquarkus.native.container-build=true
+```
+
+You can then execute your native executable with: `./build/url-shortener-1.0.0-SNAPSHOT-runner`
+
+If you want to learn more about building native executables, please consult <https://quarkus.io/guides/gradle-tooling>.
+
+## Related Guides
+
+- REST ([guide](https://quarkus.io/guides/rest)): Build RESTful web services and APIs using Jakarta REST (formerly JAX-RS)
+- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
+- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplified JPA/Hibernate data access layer with active record and repository patterns
+- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
+
+## Provided Code
+
+### Hibernate ORM
+
+Create your first JPA entity
+
+[Related guide section...](https://quarkus.io/guides/hibernate-orm)
+
+
+[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
+
+
+### REST
+
+Easily start your REST Web Services
+
+[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
