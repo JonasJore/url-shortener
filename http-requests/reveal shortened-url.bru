@@ -1,0 +1,16 @@
+meta {
+  name: reveal shortened-url
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:8080/shortened-url/reveal/d822725a-707a-4c25-ab84-3e64d4273845
+  body: json
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
