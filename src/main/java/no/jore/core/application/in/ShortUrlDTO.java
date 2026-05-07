@@ -4,22 +4,31 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ShortUrlDTO {
-  private UUID id;
   private String url;
   private String shortened;
   private LocalDateTime createdAt;
+  private int visitCount;
 
-  public ShortUrlDTO(UUID id, String url, String shortened, LocalDateTime createdAt) {
-    this.id = id;
+  public ShortUrlDTO(UUID id, String url, String shortened, LocalDateTime createdAt, int visitCount) {
     this.url = url;
     this.shortened = shortened;
     this.createdAt = createdAt;
+    this.visitCount = visitCount;
   }
 
-  public UUID getId() {
-    return this.id;
-  }
   public String getUrl() {
     return this.url;
+  }
+
+  public String getShortened() {
+    return this.shortened;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public int getVisitCount() {
+    return this.visitCount;
   }
 }
