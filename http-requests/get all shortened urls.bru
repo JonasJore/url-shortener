@@ -1,0 +1,16 @@
+meta {
+  name: get all shortened urls
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:8080/shortened-url/getAll
+  body: json
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

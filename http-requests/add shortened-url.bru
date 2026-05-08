@@ -1,0 +1,25 @@
+meta {
+  name: add shortened-url
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/shortened-url/add
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id": "d822725a-707a-4c25-ab84-4e64d4273843",
+    "url": "https://reddit.com",
+    "shortened": "shortenedReddit",
+    "createdAt": "2023-05-05T10:15:30"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

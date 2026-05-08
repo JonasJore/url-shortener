@@ -37,3 +37,5 @@ out/
 .idea_modules/
 # etc
 shortened-urls.json
+build/
+.env

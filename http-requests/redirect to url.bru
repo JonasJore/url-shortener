@@ -1,0 +1,16 @@
+meta {
+  name: redirect to url
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:8080/shortened-url/r/fd8f99e9-4a26-4de3-9f8d-96146eea8178
+  body: json
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
