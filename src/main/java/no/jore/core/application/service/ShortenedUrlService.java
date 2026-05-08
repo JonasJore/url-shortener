@@ -2,6 +2,7 @@ package no.jore.core.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import no.jore.core.domain.ShortUrl;
 import no.jore.ports.out.ShortUrlRepositoryPort;
 
@@ -31,4 +32,10 @@ public class ShortenedUrlService {
   public Optional<ShortUrl> findById(String id) {
     return shortUrlPanacheRepository.findById(id);
   }
+
+  @Transactional
+  public void handleRedirect(String id) {
+    shortUrlPanacheRepository.increaseVisitCount(id);
+  }
+
 }

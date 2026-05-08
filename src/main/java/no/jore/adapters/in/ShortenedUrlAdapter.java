@@ -12,6 +12,7 @@ import no.jore.core.application.service.ShortenedUrlService;
 import no.jore.core.domain.ShortUrl;
 import no.jore.ports.in.ShortenedUrlPort;
 
+import java.net.URI;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -51,6 +52,19 @@ public class ShortenedUrlAdapter implements ShortenedUrlPort {
   @GET
   public Response getAllUrls() {
     return Response.ok(shortenedUrlService.getAll()).build();
+  }
+
+  @Path("/r/{id}")
+  @GET
+  public Response redirect(@PathParam("id") String id) {
+    ShortUrl shortUrl = shortenedUrlService.findById(id)
+      .orElseThrow(() -> new NoSuchElementException("no shorturls by id " + id + " found"));
+
+    shortenedUrlService.handleRedirect(shortUrl.getId().toString());
+
+    return Response.status(Response.Status.MOVED_PERMANENTLY)
+      .location(URI.create(shortUrl.getUrl()))
+      .build();
   }
 
 }

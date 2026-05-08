@@ -12,4 +12,6 @@ public interface ShortenedUrlPort {
   RevealedUrlDTO revealShortenedUrl(String id) throws NoSuchElementException;
 
   Response getAllUrls();
+
+  Response redirect(String id);
 }

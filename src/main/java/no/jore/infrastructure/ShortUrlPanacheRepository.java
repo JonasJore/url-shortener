@@ -29,4 +29,8 @@ public class ShortUrlPanacheRepository implements ShortUrlRepositoryPort, Panach
   public void save(ShortUrl shortUrlDomain) {
     persist(ShortenedUrlEntityMapper.toEntity(shortUrlDomain));
   }
+
+  public void increaseVisitCount(String id) {
+    update("visitCount = visitCount + 1 where id = ?1", UUID.fromString(id));
+  }
 }
