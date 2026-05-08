@@ -1,8 +1,10 @@
 package no.jore.core.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.*;
-import org.hibernate.annotations.UuidGenerator;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -11,8 +13,6 @@ import java.util.UUID;
 @Table(name = "shortened_url")
 public class ShortUrlEntity extends PanacheEntityBase {
   @Id
-  @GeneratedValue
-  @UuidGenerator
   private UUID id;
   @Column(name = "url", nullable = false, length = 2048)
   private String url;
@@ -26,7 +26,8 @@ public class ShortUrlEntity extends PanacheEntityBase {
   public ShortUrlEntity() {
   }
 
-  public ShortUrlEntity(String url, String shortened, LocalDateTime createdAt, int visitCount) {
+  public ShortUrlEntity(UUID id, String url, String shortened, LocalDateTime createdAt, int visitCount) {
+    this.id = id;
     this.url = url;
     this.shortened = shortened;
     this.createdAt = createdAt;
